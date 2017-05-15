@@ -1,15 +1,39 @@
-## Put comments here that give an overall description of what your
-## functions do
 
-## Write a short comment describing this function
+# Coursera : Data Scientist Specialization
+# Course 2 : Week 3 Assignment
+
+#############################################
+# The purpose of these 2 functions are to save time as matrix inversion is very time consuming.
+# Caching the computed inverse of a matrix is beneficial as computing repeteadly may cost so much time.
+
+
+# 1. This function creates a special "matrix" object that can cache its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  m <- NULL
+  set <- function(y = matrix()) {
+    x <<- y*
+    m <<- NULL
+  }
+  get <- function() x
+  setInverse <- function(inverse) m <<- inverse
+  getInverse <- function() m
+  list(set = set, get = get,
+       setInverse = setInverse,
+       getInverse = getInverse)
 }
 
 
-## Write a short comment describing this function
+# 2. This function computes the inverse of the special "matrix" returned by makeCacheMatrix 
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  m <- x$getInverse()
+  if(!is.null(m)) {
+    message("loading...")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setInverse(m)
+  m
 }
